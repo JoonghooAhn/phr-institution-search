@@ -1,0 +1,82 @@
+server:
+  port: 8080
+  shutdown: graceful
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+spring:
+  application:
+    name: phr-institution-search
+  main:
+    web-application-type: servlet
+  batch:
+    jdbc:
+      initialize-schema: always
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 5000
+          batch_versioned_data: true
+  jackson:
+    default-property-inclusion: non_null
+    time-zone: Asia/Seoul
+    date-format: java.text.SimpleDateFormat
+
+logging:
+  level:
+    root: info
+    query: debug
+    com.cenacle: debug
+    org.springframework.web.socket: debug
+    org.springframework.messaging.simp: debug
+    org.springframework.jdbc.datasource.init: debug
+
+batch-config:
+  bulk-size: 20000
+
+institution-api-config:
+  clinic-api-path: HsptlAsembySearchService/getHsptlBassInfoInqire
+  clinic-api-access-key: SU1z%2FjGZRoyk8QJpQ2%2BdUL8YLt9YybbfVxBvwhXi231%2BDRfFML6Zg4btibwmf69A60xBON4v8yeWk1pdpeu5lg%3D%3D
+  pharmacy-api-path: ErmctInsttInfoInqireService/getParmacyFullDown
+  pharmacy-api-access-key: 9PmlpL494qrvxVsvDJRbWnGZ17670KUkVnUlFVMezSfjXEwaLhmf4heI1Vn7iBODBGqXejgngoh1nGgoGaF9jg%3D%3D
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:mysql://localhost:3306/hospital
+    username: visitor
+    password: 12345678
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    elasticsearch:
+      client:
+        reactive:
+          endpoints: localhost:9200
+          connection-timeout: 10s
+          socket-timeout: 10s
+    rest:
+      max-page-size: 50
+cenacle:
+  search:
+    clinic-index-name: clinic
+    pharmacy-index-name: pharmacy

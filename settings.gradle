@@ -1,0 +1,4 @@
+rootProject.name = 'phr-institution-search'
+
+include 'phr-institution-search-api'
+include 'phr-institution-search-batch'
